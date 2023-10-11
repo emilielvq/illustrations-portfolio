@@ -2,7 +2,14 @@
   <div class="container">
     <nav>
       <ul id="navbar-menu">
-        <li><router-link to="/">Home</router-link></li>
+        <li>
+          <router-link to="/"
+            ><img
+              id="logo"
+              src="@/assets/logo_prov.png"
+              alt="Logo Emilie Levaique"
+          /></router-link>
+        </li>
         <li><router-link to="gallery">Gallery</router-link></li>
         <li><router-link to="process">Process</router-link></li>
         <li><router-link to="about">About</router-link></li>
@@ -31,6 +38,13 @@ export default {
   z-index: 3;
 }
 
+#logo {
+  height: auto;
+  width: auto;
+  max-height: 80%;
+  max-width: 80%;
+}
+
 nav {
   background-color: #333;
   color: #fff;
@@ -40,6 +54,8 @@ nav {
 nav a {
   font-weight: bold;
   color: #2c3e50;
+  font-size: 1.3rem;
+  transition: color 0.3s ease;
 }
 
 nav a.router-link-exact-active {

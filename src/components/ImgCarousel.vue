@@ -1,17 +1,25 @@
 <template>
   <section aria-label="Recent illustration">
     <div class="carousel">
-      <button class="carousel-button previous">&#171;</button>
-      <button class="carousel-button next">&#187;</button>
+      <button class="carousel-button previous" @click="prevSlide">
+        &#171;
+      </button>
+      <button class="carousel-button next" @click="nextSlide">&#187;</button>
       <ul>
-        <li class="slide" :class="{ active: currentIndex === 0 }">
-          <img src="../assets/skyrim.jpg" alt="Défense de Glandouiller" />
-        </li>
-        <li class="slide" :class="{ active: currentIndex === 1 }">
-          <img src="../assets/sassanos.jpg" alt="Gagner la guerre - Sassanos" />
-        </li>
-        <li class="slide" :class="{ active: currentIndex === 2 }">
-          <img src="../assets/fight.jpg" alt="Soldier's duel" />
+        <li
+          v-for="(slide, index) in slides"
+          :key="index"
+          class="slide"
+          :class="{ active: currentIndex === index }"
+        >
+          <img
+            :src="require(`@/assets/main_images/${slide.src}`)"
+            :alt="slide.alt"
+            :style="{
+              opacity: currentIndex === index ? 1 : 0,
+              transition: 'opacity 0.8s ease',
+            }"
+          />
         </li>
       </ul>
     </div>
@@ -23,8 +31,37 @@ export default {
   name: "ImgCarousel",
   data() {
     return {
-      currentIndex: 0, // Initialize the active slide index
+      currentIndex: 0,
+      slides: [
+        {
+          src: "skyrim.jpg",
+          alt: "Défense de Glandouiller",
+        },
+        {
+          src: "sassanos.jpg",
+          alt: "Gagner la guerre - Sassanos",
+        },
+        {
+          src: "fight.jpg",
+          alt: "Soldier's duel",
+        },
+      ],
     };
+  },
+  methods: {
+    nextSlide() {
+      this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+    },
+    prevSlide() {
+      this.currentIndex =
+        (this.currentIndex - 1 + this.slides.length) % this.slides.length; //+this.slides.length in case currentindex=0
+    },
+  },
+  mounted() {
+    //Automatically goes to the next slide
+    setInterval(() => {
+      this.nextSlide();
+    }, 5 * 1000); //in milliseconds
   },
 };
 </script>
@@ -41,9 +78,11 @@ body {
 }
 
 .carousel {
-  width: 50vw;
+  width: 65vw;
   height: 100vh;
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: 10%;
 }
 
 .carousel > ul {
@@ -53,17 +92,16 @@ body {
 }
 
 .slide {
-  position: absolute;
-  inset: 0;
   opacity: 0;
 }
 
 .slide > img {
   position: fixed;
-  right: 0;
-  top: 0;
+  text-align: auto;
   width: auto;
   height: auto;
+  max-width: 100%;
+  max-height: 100%;
   z-index: -1;
 }
 
